@@ -1,0 +1,6 @@
+userid: '00000000'
+password: password
+domains:
+- foobar.net:
+- bazbaz.com:
+  - 'foobar'
