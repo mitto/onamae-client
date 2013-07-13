@@ -24,11 +24,12 @@ module OnamaeDDNS
     end
 
     def create_socket
-      cert_file         = "cert.pem"
+      cert_file         = "cert.pfx"
       socket            = TCPSocket.new(DDNS_HOST, DDNS_PORT)
       context           = OpenSSL::SSL::SSLContext.new()
-      context.cert      = OpenSSL::X509::Certificate.new(open(cert_file).read)
-      context.key       = OpenSSL::PKey::RSA.new(open(cert_file))
+      cert              = OpenSSL::PKCS12.new(open(cert_file), "dice")
+      context.cert      = cert.certificate
+      context.key       = cert.key
       socket            = OpenSSL::SSL::SSLSocket.new(socket, context)
       socket.sync_close = true
       socket
